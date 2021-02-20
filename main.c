@@ -27,8 +27,33 @@ void vec_print(struct vec *this) {
     printf("]\n");
 }
 
+void _swap(int data[], int a, int b) {
+    int tmp = data[a];
+    data[a] = data[b];
+    data[b] = tmp;
+}
+
+void _sort(int data[], int start, int end) {
+    if(start >= end)
+        return;
+    int target = start;
+    for(int i = start; i <= end; ++i) {
+        if(data[i] < data[end])
+            _swap(data, target++, i);
+    }
+    _swap(data, target, end);
+    _sort(data, start, target - 1);
+    _sort(data, target + 1, end);
+}
+
+void vec_sort(struct vec *this) {
+    return _sort(this->data, 0, this->size - 1);
+}
+
 int main(void) {
-    struct vec *vec = vec_create(10, 100);
+    struct vec *vec = vec_create(20, 100);
+    vec_print(vec);
+    vec_sort(vec);
     vec_print(vec);
     vec_free(vec);
 }
